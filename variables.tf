@@ -1,9 +1,9 @@
 variable "instance_name" {
   type        = string
-  description = "Instance name"
+  description = "Please enter Instance name"
 }
 
 variable "instance_name2" {
   type        = string
-  description = "Instance name2"
+  description = "Please enter Instance name2"
 }
