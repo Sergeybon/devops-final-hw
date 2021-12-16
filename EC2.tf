@@ -213,10 +213,10 @@ resource "aws_instance" "test_instance" {
 
   user_data       = <<-EOT
       #!/bin/bash
-      sudo apt-get update
-      sudo apt-get install -y apache2
-      sudo systemctl start apache2
-      sudo systemctl enable apache2
+      sudo yum update
+      sudo yum -y install nginx
+      sudo systemctl enable nginx
+      sudo systemctl start nginx
       echo "First Deployed via Terraform by Sergey Bondarenko</h1>" | sudo tee /usr/local/nginx/html/index.html
      EOT
 
@@ -237,7 +237,7 @@ resource "aws_instance" "test_instance2" {
 
   user_data       = <<-EOT
       #!/bin/bash
-      sudo apt-get update
+      sudo yum update
       sudo yum -y install nginx
       sudo systemctl enable nginx
       sudo systemctl start nginx
