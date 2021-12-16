@@ -220,13 +220,14 @@ resource "aws_instance" "test_instance" {
     volume_size = 8
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get -y update",
-      "sudo apt-get -y install nginx",
-      "sudo service nginx start",
-    ]
-  }
+  user_data       = <<-EOT
+      #!/bin/bash
+      sudo apt-get update
+      sudo apt-get install -y apache2
+      sudo systemctl start apache2
+      sudo systemctl enable apache2
+      echo "First Deployed via Terraform by Sergey Bondarenko</h1>" | sudo tee /usr/local/nginx/html/index.html
+     EOT
 
   tags = {
     Name = var.instance_name
@@ -243,13 +244,25 @@ resource "aws_instance" "test_instance2" {
     volume_size = 8
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get -y update",
-      "sudo apt-get -y install nginx",
-      "sudo service nginx start",
-    ]
-  }
+  user_data       = <<-EOT
+      #!/bin/bash
+      sudo apt-get update
+      sudo apt-get install -y apache2
+      sudo systemctl start apache2
+      sudo systemctl enable apache2
+      echo "Second Deployed via Terraform by Sergey Bondarenko</h1>" | sudo tee /usr/local/nginx/html/index.html
+     EOT
+
+
+#  provisioner "remote-exec" {
+#    inline = [
+#      "sudo apt-get -y update",
+#      "sudo apt-get -y install nginx",
+#      "sudo service nginx start",
+#      "sudo echo \"<h1>First Deployed via Terraform by Sergey Bondarenko</h1>\" | sudo tee /var/www/html/index.html",
+#    ]
+#
+#  }
 
   tags = {
     Name = var.instance_name2
