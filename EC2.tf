@@ -77,32 +77,32 @@ egress = [
   }
 }
 
-resource "aws_security_group" "allow_tls" {
-  name        = "allow_tls"
-  description = "Allow TLS inbound traffic"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    description      = "TLS from VPC"
-    from_port        = 443
-    to_port          = 443
-    protocol         = "tcp"
-    cidr_blocks      = [aws_vpc.main.cidr_block]
-    ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = {
-    Name = "allow_tls"
-  }
-}
+#resource "aws_security_group" "allow_tls" {
+#  name        = "allow_tls"
+#  description = "Allow TLS inbound traffic"
+#  vpc_id      = aws_vpc.main.id
+#
+#  ingress {
+#    description      = "TLS from VPC"
+#    from_port        = 443
+#    to_port          = 443
+#    protocol         = "tcp"
+#    cidr_blocks      = [aws_vpc.main.cidr_block]
+#    ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
+#  }ipv6_cidr_block
+#
+#  egress {
+#    from_port        = 0
+#    to_port          = 0
+#    protocol         = "-1"
+#    cidr_blocks      = ["0.0.0.0/0"]
+#    ipv6_cidr_blocks = ["::/0"]
+#  }
+#
+#  tags = {
+#    Name = "allow_tls"
+#  }
+#}
 
 resource "aws_security_group" "allow_elb" {
   name        = "allow_elb"
@@ -112,8 +112,8 @@ resource "aws_security_group" "allow_elb" {
   ingress = [
     {
       description      = "From ELB to EC2"
-      from_port        = 8080
-      to_port          = 8080
+      from_port        = 80
+      to_port          = 80
       protocol         = "tcp"
       cidr_blocks      = []
       ipv6_cidr_blocks = []
@@ -204,7 +204,7 @@ resource "aws_iam_role_policy" "read-registry" {
 resource "aws_instance" "test_instance" {
   ami           = "ami-05d34d340fb1d89e5"  # Amazon Linux AMI
     instance_type = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_elb.id, aws_security_group.allow_tls.id]
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_elb.id]
   subnet_id = aws_subnet.new-public-01.id
   iam_instance_profile = aws_iam_instance_profile.ec2-registry.name
   root_block_device {
@@ -228,7 +228,7 @@ resource "aws_instance" "test_instance" {
 resource "aws_instance" "test_instance2" {
   ami           = "ami-05d34d340fb1d89e5" # Amazon Linux AMI
     instance_type = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_elb.id, aws_security_group.allow_tls.id]
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_elb.id]
   subnet_id = aws_subnet.new-public-02.id
   iam_instance_profile = aws_iam_instance_profile.ec2-registry.name
   root_block_device {
@@ -238,9 +238,9 @@ resource "aws_instance" "test_instance2" {
   user_data       = <<-EOT
       #!/bin/bash
       sudo apt-get update
-      sudo apt-get install -y apache2
-      sudo systemctl start apache2
-      sudo systemctl enable apache2
+      sudo yum -y install nginx
+      sudo systemctl enable nginx
+      sudo systemctl start nginx
       echo "Second Deployed via Terraform by Sergey Bondarenko</h1>" | sudo tee /usr/local/nginx/html/index.html
      EOT
 
