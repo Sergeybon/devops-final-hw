@@ -1,13 +1,4 @@
 
-variable "instance_name" {
-  type        = string
-  description = "Instance name"
-}
-
-variable "instance_name2" {
-  type        = string
-  description = "Instance name2"
-}
 
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
