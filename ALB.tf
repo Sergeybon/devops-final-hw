@@ -1,5 +1,5 @@
 
-resource "aws_lb" "mylb" {
+resource "aws_lb" "this" {
   name               = "testterraformlb"
   internal           = false
   load_balancer_type = "application"
@@ -9,8 +9,8 @@ resource "aws_lb" "mylb" {
   enable_deletion_protection = false
 }
 
-resource "aws_lb_listener" "WebHTTP" {
-  load_balancer_arn = aws_lb.mylb.arn
+resource "aws_lb_listener" "HTTP" {
+  load_balancer_arn = aws_lb.this.arn
   port              = "80"
   protocol          = "HTTP"
   default_action {
@@ -23,16 +23,17 @@ resource "aws_lb_listener" "WebHTTP" {
   }
 }
 
-resource "aws_lb_listener" "WebHTTPS" {
-  load_balancer_arn = aws_lb.mylb.arn
+resource "aws_lb_listener" "HTTPS" {
+  load_balancer_arn = aws_lb.this.arn
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate_validation.example.certificate_arn
+  certificate_arn   = aws_acm_certificate_validation.this.certificate_arn
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.myec2.arn
   }
+  depends_on = [aws_acm_certificate_validation.this]
 }
 
 resource "aws_lb_target_group" "myec2" {

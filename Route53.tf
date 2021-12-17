@@ -5,7 +5,7 @@ resource "aws_route53_zone" "main" {
 }
 
 # requests the certificate from Certificate Manager aws_acm_certificate
-resource "aws_acm_certificate" "cert" {
+resource "aws_acm_certificate" "this" {
   domain_name       = "sbondar05.ga"
   validation_method = "DNS"
 
@@ -19,35 +19,28 @@ resource "aws_acm_certificate" "cert" {
 }
 
 # creates the CNAME record Certificate Manager uses to validate you own the domain aws_route53_record
-resource "aws_route53_zone" "example" {
-  name = "test.sbondar05.ga"
-}
+#resource "aws_route53_zone" "sbondar05" {
+#  name = "test.sbondar05.ga"
+#}
 
-resource "aws_route53_record" "example-ns" {
+resource "aws_route53_record" "this-ns" {
   allow_overwrite = true
   name            = "test.sbondar05.ga"
   ttl             = 172800
   type            = "NS"
-  zone_id         = aws_route53_zone.example.zone_id
+  zone_id         = aws_route53_zone.main.zone_id
 
   records = [
-    aws_route53_zone.example.name_servers[0],
-    aws_route53_zone.example.name_servers[1],
-    aws_route53_zone.example.name_servers[2],
-    aws_route53_zone.example.name_servers[3],
+    aws_route53_zone.main.name_servers[0],
+    aws_route53_zone.main.name_servers[1],
+    aws_route53_zone.main.name_servers[2],
+    aws_route53_zone.main.name_servers[3],
   ]
 }
 
-# waits for the certificate to be issued  aws_acm_certificate_validation
-resource "aws_acm_certificate" "example" {
-  domain_name               = "sbondar05.ga"
-  subject_alternative_names = ["www.sbondar05.ga", "sbondar05.ga"]
-  validation_method         = "DNS"
-}
-
-resource "aws_route53_record" "example" {
+resource "aws_route53_record" "this" {
   for_each = {
-    for dvo in aws_acm_certificate.example.domain_validation_options : dvo.domain_name => {
+    for dvo in aws_acm_certificate.this.domain_validation_options : dvo.domain_name => {
       name    = dvo.resource_record_name
       record  = dvo.resource_record_value
       type    = dvo.resource_record_type
@@ -65,9 +58,10 @@ resource "aws_route53_record" "example" {
   zone_id         = each.value.zone_id
 }
 
-resource "aws_acm_certificate_validation" "example" {
-  certificate_arn         = aws_acm_certificate.example.arn
-  validation_record_fqdns = [for record in aws_route53_record.example : record.fqdn]
+resource "aws_acm_certificate_validation" "this" {
+  certificate_arn         = aws_acm_certificate.this.arn
+  validation_record_fqdns = [for record in aws_route53_record.this : record.fqdn]
+  depends_on = [aws_route53_record.this]
 }
 
 
