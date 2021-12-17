@@ -200,10 +200,19 @@ resource "aws_iam_role_policy" "read-registry" {
   })
 }
 
+#resource "aws_key_pair" "ec2" {
+#  key_name   = "ec2"
+#  public_key = file("/.ssh/ec2.pub")
+#}
+
+# This EC2 key pair will not be created
+
+
 
 resource "aws_instance" "test_instance" {
   ami           = "ami-05d34d340fb1d89e5"  # Amazon Linux AMI
     instance_type = "t2.micro"
+  #key_name  = aws_key_pair.ec2.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_elb.id]
   subnet_id = aws_subnet.new-public-01.id
   iam_instance_profile = aws_iam_instance_profile.ec2-registry.name
@@ -213,9 +222,10 @@ resource "aws_instance" "test_instance" {
 
   user_data       = <<-EOT
       #!/bin/bash
-      sudo yum update
+      sudo sudo amazon-linux-extras list | grep nginx
+      sudo sudo amazon-linux-extras enable nginx1
+      sudo sudo yum clean metadata
       sudo yum -y install nginx
-      sudo systemctl enable nginx
       sudo systemctl start nginx
       echo "First Deployed via Terraform by Sergey Bondarenko</h1>" | sudo tee /usr/local/nginx/html/index.html
      EOT
@@ -228,6 +238,7 @@ resource "aws_instance" "test_instance" {
 resource "aws_instance" "test_instance2" {
   ami           = "ami-05d34d340fb1d89e5" # Amazon Linux AMI
     instance_type = "t2.micro"
+  #key_name  = aws_key_pair.ec2.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_elb.id]
   subnet_id = aws_subnet.new-public-02.id
   iam_instance_profile = aws_iam_instance_profile.ec2-registry.name
@@ -237,9 +248,10 @@ resource "aws_instance" "test_instance2" {
 
   user_data       = <<-EOT
       #!/bin/bash
-      sudo yum update
+      sudo sudo amazon-linux-extras list | grep nginx
+      sudo sudo amazon-linux-extras enable nginx1
+      sudo sudo yum clean metadata
       sudo yum -y install nginx
-      sudo systemctl enable nginx
       sudo systemctl start nginx
       echo "Second Deployed via Terraform by Sergey Bondarenko</h1>" | sudo tee /usr/local/nginx/html/index.html
      EOT
