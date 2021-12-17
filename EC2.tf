@@ -13,12 +13,12 @@ resource "aws_security_group" "allow_ssh" {
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = []
-      prefix_list_ids = []
-      security_groups = []
-      self = false
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = false
     }
   ]
-egress = [
+  egress = [
     {
       description      = "for all outgoing traffics"
       from_port        = 0
@@ -26,9 +26,9 @@ egress = [
       protocol         = "-1"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
-      prefix_list_ids = []
-      security_groups = []
-      self = false
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = false
     }
   ]
 
@@ -52,12 +52,12 @@ resource "aws_security_group" "allow_web" {
       protocol         = "tcp"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = []
-      prefix_list_ids = []
-      security_groups = []
-      self = false
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = false
     }
   ]
-egress = [
+  egress = [
     {
       description      = "for all outgoing traffics"
       from_port        = 0
@@ -65,9 +65,9 @@ egress = [
       protocol         = "-1"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
-      prefix_list_ids = []
-      security_groups = []
-      self = false
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = false
     }
   ]
 
@@ -117,12 +117,12 @@ resource "aws_security_group" "allow_elb" {
       protocol         = "tcp"
       cidr_blocks      = []
       ipv6_cidr_blocks = []
-      prefix_list_ids = []
-      security_groups = [aws_security_group.allow_web.id]
-      self = false
+      prefix_list_ids  = []
+      security_groups  = [aws_security_group.allow_web.id]
+      self             = false
     }
   ]
-egress = [
+  egress = [
     {
       description      = "for all outgoing traffics"
       from_port        = 0
@@ -130,9 +130,9 @@ egress = [
       protocol         = "-1"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
-      prefix_list_ids = []
-      security_groups = []
-      self = false
+      prefix_list_ids  = []
+      security_groups  = []
+      self             = false
     }
   ]
 
@@ -179,23 +179,23 @@ resource "aws_iam_role_policy" "read-registry" {
     Version = "2012-10-17"
     Statement = [
       {
-        "Effect": "Allow",
-        "Action": [
-            "ecr:GetAuthorizationToken",
-            "ecr:BatchCheckLayerAvailability",
-            "ecr:GetDownloadUrlForLayer",
-            "ecr:GetRepositoryPolicy",
-            "ecr:DescribeRepositories",
-            "ecr:ListImages",
-            "ecr:DescribeImages",
-            "ecr:BatchGetImage",
-            "ecr:GetLifecyclePolicy",
-            "ecr:GetLifecyclePolicyPreview",
-            "ecr:ListTagsForResource",
-            "ecr:DescribeImageScanFindings"
+        "Effect" : "Allow",
+        "Action" : [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:GetRepositoryPolicy",
+          "ecr:DescribeRepositories",
+          "ecr:ListImages",
+          "ecr:DescribeImages",
+          "ecr:BatchGetImage",
+          "ecr:GetLifecyclePolicy",
+          "ecr:GetLifecyclePolicyPreview",
+          "ecr:ListTagsForResource",
+          "ecr:DescribeImageScanFindings"
         ],
-        "Resource": "*"
-        },
+        "Resource" : "*"
+      },
     ]
   })
 }
@@ -210,17 +210,17 @@ resource "aws_iam_role_policy" "read-registry" {
 
 
 resource "aws_instance" "test_instance" {
-  ami           = "ami-05d34d340fb1d89e5"  # Amazon Linux AMI
-    instance_type = "t2.micro"
+  ami           = "ami-05d34d340fb1d89e5" # Amazon Linux AMI
+  instance_type = "t2.micro"
   #key_name  = aws_key_pair.ec2.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_elb.id]
-  subnet_id = aws_subnet.new-public-01.id
-  iam_instance_profile = aws_iam_instance_profile.ec2-registry.name
+  subnet_id              = aws_subnet.new-public-01.id
+  iam_instance_profile   = aws_iam_instance_profile.ec2-registry.name
   root_block_device {
     volume_size = 8
   }
 
-  user_data       = <<-EOT
+  user_data = <<-EOT
       #!/bin/bash
       sudo sudo amazon-linux-extras list | grep nginx
       sudo sudo amazon-linux-extras enable nginx1
@@ -237,16 +237,16 @@ resource "aws_instance" "test_instance" {
 
 resource "aws_instance" "test_instance2" {
   ami           = "ami-05d34d340fb1d89e5" # Amazon Linux AMI
-    instance_type = "t2.micro"
+  instance_type = "t2.micro"
   #key_name  = aws_key_pair.ec2.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id, aws_security_group.allow_elb.id]
-  subnet_id = aws_subnet.new-public-02.id
-  iam_instance_profile = aws_iam_instance_profile.ec2-registry.name
+  subnet_id              = aws_subnet.new-public-02.id
+  iam_instance_profile   = aws_iam_instance_profile.ec2-registry.name
   root_block_device {
     volume_size = 8
   }
 
-  user_data       = <<-EOT
+  user_data = <<-EOT
       #!/bin/bash
       sudo sudo amazon-linux-extras list | grep nginx
       sudo sudo amazon-linux-extras enable nginx1
@@ -257,15 +257,15 @@ resource "aws_instance" "test_instance2" {
      EOT
 
 
-#  provisioner "remote-exec" {
-#    inline = [
-#      "sudo apt-get -y update",
-#      "sudo apt-get -y install nginx",
-#      "sudo service nginx start",
-#      "sudo echo \"<h1>First Deployed via Terraform by Sergey Bondarenko</h1>\" | sudo tee /var/www/html/index.html",
-#    ]
-#
-#  }
+  #  provisioner "remote-exec" {
+  #    inline = [
+  #      "sudo apt-get -y update",
+  #      "sudo apt-get -y install nginx",
+  #      "sudo service nginx start",
+  #      "sudo echo \"<h1>First Deployed via Terraform by Sergey Bondarenko</h1>\" | sudo tee /var/www/html/index.html",
+  #    ]
+  #
+  #  }
 
   tags = {
     Name = var.instance_name2

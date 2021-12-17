@@ -7,10 +7,10 @@
 #----------------------------------------------------------
 
 provider "aws" {
-  region = "${var.aws_region}"
+  region                  = var.aws_region
   shared_credentials_file = "/Users/siarhei/.aws/credentials"
 }
 
 resource "aws_ecr_repository" "python" {
-  name                 = "testpython"
+  name = "testpython"
 }

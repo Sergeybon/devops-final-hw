@@ -8,9 +8,9 @@ data "aws_availability_zones" "available" {
 }
 
 resource "aws_subnet" "new-public-01" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.8.128.0/18"
-  availability_zone = "${var.aws_region}a"
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.8.128.0/18"
+  availability_zone       = "${var.aws_region}a"
   map_public_ip_on_launch = true
 
   tags = {
@@ -19,9 +19,9 @@ resource "aws_subnet" "new-public-01" {
 }
 
 resource "aws_subnet" "new-public-02" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.8.192.0/18"
-  availability_zone = "${var.aws_region}b"
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.8.192.0/18"
+  availability_zone       = "${var.aws_region}b"
   map_public_ip_on_launch = true
 
   tags = {
@@ -43,8 +43,8 @@ resource "aws_route_table" "default_rt" {
 
   route = [
     {
-      cidr_block = "0.0.0.0/0"
-      gateway_id = aws_internet_gateway.myigw.id
+      cidr_block                 = "0.0.0.0/0"
+      gateway_id                 = aws_internet_gateway.myigw.id
       carrier_gateway_id         = ""
       destination_prefix_list_id = ""
       egress_only_gateway_id     = ""

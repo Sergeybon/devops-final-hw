@@ -14,22 +14,26 @@ resource "aws_lb_listener" "WebHTTP" {
   port              = "80"
   protocol          = "HTTP"
   default_action {
+    type             = "redirect"
+    redirect {
+      port = "443"
+      protocol = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "WebHTTPS" {
+  load_balancer_arn = aws_lb.mylb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate_validation.example.certificate_arn
+  default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.myec2.arn
   }
 }
-
-#resource "aws_lb_listener" "WebHTTPS" {
-#  load_balancer_arn = aws_lb.mylb.arn
-#  port              = "443"
-#  protocol          = "HTTPS"
-#  ssl_policy        = "ELBSecurityPolicy-2016-08"
-#  certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
-#  default_action {
-#    type             = "forward"
-#    target_group_arn = aws_lb_target_group.myec2.arn
-#  }
-#}
 
 resource "aws_lb_target_group" "myec2" {
   name        = "testterraform"
