@@ -3,9 +3,14 @@ resource "aws_vpc" "main" {
   cidr_block = "10.8.0.0/16"
 }
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 resource "aws_subnet" "new-public-01" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.8.128.0/18"
+  availability_zone = "${data.aws_availability_zones.available.names[0]}"
   map_public_ip_on_launch = true
 
   tags = {
@@ -16,6 +21,7 @@ resource "aws_subnet" "new-public-01" {
 resource "aws_subnet" "new-public-02" {
   vpc_id     = aws_vpc.main.id
   cidr_block = "10.8.192.0/18"
+  availability_zone = "${data.aws_availability_zones.available.names[1]}"
   map_public_ip_on_launch = true
 
   tags = {
