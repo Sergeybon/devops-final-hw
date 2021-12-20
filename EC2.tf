@@ -229,7 +229,7 @@ resource "aws_instance" "test_instance" {
       sudo sudo yum clean metadata
       sudo yum -y install nginx
       sudo systemctl start nginx
-      echo "First Deployed via Terraform by Sergey Bondarenko</h1>" | sudo tee /usr/local/nginx/html/index.html
+      echo "First Deployed via Terraform by Sergey Bondarenko</h1>" | sudo tee /usr/share/nginx/html/index.html
      EOT
 
   tags = {
@@ -255,7 +255,7 @@ resource "aws_instance" "test_instance2" {
       sudo sudo yum clean metadata
       sudo yum -y install nginx
       sudo systemctl start nginx
-      echo "Second Deployed via Terraform by Sergey Bondarenko</h1>" | sudo tee /usr/local/nginx/html/index.html
+      echo "Second Deployed via Terraform by Sergey Bondarenko</h1>" | sudo tee /usr/share/nginx/html/index.html
      EOT
 
 
