@@ -13,6 +13,19 @@ variable "aws_region" {
   description = "Please enter region"
 }
 #
+#variable "bucket_name" {
+#  type        = string
+#  description = "Name of S3 Bucket for tfstate file"
+#}
+#variable "dynamo_billing_mode" {
+#  type        = string
+#  description = "billing_mode = PAY_PER_REQUEST for DynamoDB"
+#}
+#variable "dynamo_name" {
+#  type        = string
+#  description = "Name of DynamoDB lock table"
+#}
+#
 #variable "dom_name" {
 #  type        = string
 #  description = "domain names in the certificate"

@@ -37,17 +37,6 @@ Terraform will perform the following actions:
       + validation_record_fqdns = (known after apply)
     }
 
-  # aws_ecr_repository.python will be created
-  + resource "aws_ecr_repository" "python" {
-      + arn                  = (known after apply)
-      + id                   = (known after apply)
-      + image_tag_mutability = "MUTABLE"
-      + name                 = "testpython"
-      + registry_id          = (known after apply)
-      + repository_url       = (known after apply)
-      + tags_all             = (known after apply)
-    }
-
   # aws_iam_instance_profile.ec2-registry will be created
   + resource "aws_iam_instance_profile" "ec2-registry" {
       + arn         = (known after apply)
@@ -461,6 +450,14 @@ Terraform will perform the following actions:
 
   # aws_lb_target_group_attachment.testterraform will be created
   + resource "aws_lb_target_group_attachment" "testterraform" {
+      + id               = (known after apply)
+      + port             = 80
+      + target_group_arn = (known after apply)
+      + target_id        = (known after apply)
+    }
+
+  # aws_lb_target_group_attachment.testterraform2 will be created
+  + resource "aws_lb_target_group_attachment" "testterraform2" {
       + id               = (known after apply)
       + port             = 80
       + target_group_arn = (known after apply)

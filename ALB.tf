@@ -3,7 +3,7 @@ resource "aws_lb" "this" {
   name               = "testterraformlb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.allow_web.id]
+  security_groups    = [aws_security_group.allow_web.id, aws_security_group.allow_tls.id]
   subnets            = [aws_subnet.new-public-01.id, aws_subnet.new-public-02.id]
 
   enable_deletion_protection = false
