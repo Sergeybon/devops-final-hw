@@ -1,0 +1,755 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_acm_certificate.this will be created
+  + resource "aws_acm_certificate" "this" {
+      + arn                       = (known after apply)
+      + domain_name               = "sbondar05.ga"
+      + domain_validation_options = [
+          + {
+              + domain_name           = "sbondar05.ga"
+              + resource_record_name  = (known after apply)
+              + resource_record_type  = (known after apply)
+              + resource_record_value = (known after apply)
+            },
+        ]
+      + id                        = (known after apply)
+      + status                    = (known after apply)
+      + subject_alternative_names = (known after apply)
+      + tags                      = {
+          + "Environment" = "test"
+        }
+      + tags_all                  = {
+          + "Environment" = "test"
+        }
+      + validation_emails         = (known after apply)
+      + validation_method         = "DNS"
+    }
+
+  # aws_acm_certificate_validation.this will be created
+  + resource "aws_acm_certificate_validation" "this" {
+      + certificate_arn         = (known after apply)
+      + id                      = (known after apply)
+      + validation_record_fqdns = (known after apply)
+    }
+
+  # aws_ecr_repository.python will be created
+  + resource "aws_ecr_repository" "python" {
+      + arn                  = (known after apply)
+      + id                   = (known after apply)
+      + image_tag_mutability = "MUTABLE"
+      + name                 = "testpython"
+      + registry_id          = (known after apply)
+      + repository_url       = (known after apply)
+      + tags_all             = (known after apply)
+    }
+
+  # aws_iam_instance_profile.ec2-registry will be created
+  + resource "aws_iam_instance_profile" "ec2-registry" {
+      + arn         = (known after apply)
+      + create_date = (known after apply)
+      + id          = (known after apply)
+      + name        = "registry-read"
+      + path        = "/"
+      + role        = "ec2-read-registry"
+      + tags_all    = (known after apply)
+      + unique_id   = (known after apply)
+    }
+
+  # aws_iam_role.ec2-role will be created
+  + resource "aws_iam_role" "ec2-role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ec2.amazonaws.com"
+                        }
+                      + Sid       = ""
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "ec2-read-registry"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+
+      + inline_policy {
+          + name   = (known after apply)
+          + policy = (known after apply)
+        }
+    }
+
+  # aws_iam_role_policy.read-registry will be created
+  + resource "aws_iam_role_policy" "read-registry" {
+      + id     = (known after apply)
+      + name   = "read-registry"
+      + policy = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "ecr:GetAuthorizationToken",
+                          + "ecr:BatchCheckLayerAvailability",
+                          + "ecr:GetDownloadUrlForLayer",
+                          + "ecr:GetRepositoryPolicy",
+                          + "ecr:DescribeRepositories",
+                          + "ecr:ListImages",
+                          + "ecr:DescribeImages",
+                          + "ecr:BatchGetImage",
+                          + "ecr:GetLifecyclePolicy",
+                          + "ecr:GetLifecyclePolicyPreview",
+                          + "ecr:ListTagsForResource",
+                          + "ecr:DescribeImageScanFindings",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role   = (known after apply)
+    }
+
+  # aws_instance.test_instance will be created
+  + resource "aws_instance" "test_instance" {
+      + ami                                  = "ami-05d34d340fb1d89e5"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + iam_instance_profile                 = "registry-read"
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = (known after apply)
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "Testterraform1"
+        }
+      + tags_all                             = {
+          + "Name" = "Testterraform1"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = "eea47f7ea22c2d994ec012db31c652acd6e908ff"
+      + user_data_base64                     = (known after apply)
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification {
+          + capacity_reservation_preference = (known after apply)
+
+          + capacity_reservation_target {
+              + capacity_reservation_id = (known after apply)
+            }
+        }
+
+      + ebs_block_device {
+          + delete_on_termination = (known after apply)
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + snapshot_id           = (known after apply)
+          + tags                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+
+      + enclave_options {
+          + enabled = (known after apply)
+        }
+
+      + ephemeral_block_device {
+          + device_name  = (known after apply)
+          + no_device    = (known after apply)
+          + virtual_name = (known after apply)
+        }
+
+      + metadata_options {
+          + http_endpoint               = (known after apply)
+          + http_put_response_hop_limit = (known after apply)
+          + http_tokens                 = (known after apply)
+        }
+
+      + network_interface {
+          + delete_on_termination = (known after apply)
+          + device_index          = (known after apply)
+          + network_interface_id  = (known after apply)
+        }
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 8
+          + volume_type           = (known after apply)
+        }
+    }
+
+  # aws_instance.test_instance2 will be created
+  + resource "aws_instance" "test_instance2" {
+      + ami                                  = "ami-05d34d340fb1d89e5"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + iam_instance_profile                 = "registry-read"
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = (known after apply)
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "Testterraform2"
+        }
+      + tags_all                             = {
+          + "Name" = "Testterraform2"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = "1f87b53b925e7c363631d139b87f992f5bb1ba14"
+      + user_data_base64                     = (known after apply)
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification {
+          + capacity_reservation_preference = (known after apply)
+
+          + capacity_reservation_target {
+              + capacity_reservation_id = (known after apply)
+            }
+        }
+
+      + ebs_block_device {
+          + delete_on_termination = (known after apply)
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + snapshot_id           = (known after apply)
+          + tags                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = (known after apply)
+          + volume_type           = (known after apply)
+        }
+
+      + enclave_options {
+          + enabled = (known after apply)
+        }
+
+      + ephemeral_block_device {
+          + device_name  = (known after apply)
+          + no_device    = (known after apply)
+          + virtual_name = (known after apply)
+        }
+
+      + metadata_options {
+          + http_endpoint               = (known after apply)
+          + http_put_response_hop_limit = (known after apply)
+          + http_tokens                 = (known after apply)
+        }
+
+      + network_interface {
+          + delete_on_termination = (known after apply)
+          + device_index          = (known after apply)
+          + network_interface_id  = (known after apply)
+        }
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 8
+          + volume_type           = (known after apply)
+        }
+    }
+
+  # aws_internet_gateway.myigw will be created
+  + resource "aws_internet_gateway" "myigw" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + tags     = {
+          + "Name" = "myigw"
+        }
+      + tags_all = {
+          + "Name" = "myigw"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # aws_lb.this will be created
+  + resource "aws_lb" "this" {
+      + arn                        = (known after apply)
+      + arn_suffix                 = (known after apply)
+      + desync_mitigation_mode     = "defensive"
+      + dns_name                   = (known after apply)
+      + drop_invalid_header_fields = false
+      + enable_deletion_protection = false
+      + enable_http2               = true
+      + enable_waf_fail_open       = false
+      + id                         = (known after apply)
+      + idle_timeout               = 60
+      + internal                   = false
+      + ip_address_type            = (known after apply)
+      + load_balancer_type         = "application"
+      + name                       = "testterraformlb"
+      + security_groups            = (known after apply)
+      + subnets                    = (known after apply)
+      + tags_all                   = (known after apply)
+      + vpc_id                     = (known after apply)
+      + zone_id                    = (known after apply)
+
+      + subnet_mapping {
+          + allocation_id        = (known after apply)
+          + ipv6_address         = (known after apply)
+          + outpost_id           = (known after apply)
+          + private_ipv4_address = (known after apply)
+          + subnet_id            = (known after apply)
+        }
+    }
+
+  # aws_lb_listener.HTTP will be created
+  + resource "aws_lb_listener" "HTTP" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + load_balancer_arn = (known after apply)
+      + port              = 80
+      + protocol          = "HTTP"
+      + ssl_policy        = (known after apply)
+      + tags_all          = (known after apply)
+
+      + default_action {
+          + order = (known after apply)
+          + type  = "redirect"
+
+          + redirect {
+              + host        = "#{host}"
+              + path        = "/#{path}"
+              + port        = "443"
+              + protocol    = "HTTPS"
+              + query       = "#{query}"
+              + status_code = "HTTP_301"
+            }
+        }
+    }
+
+  # aws_lb_listener.HTTPS will be created
+  + resource "aws_lb_listener" "HTTPS" {
+      + arn               = (known after apply)
+      + certificate_arn   = (known after apply)
+      + id                = (known after apply)
+      + load_balancer_arn = (known after apply)
+      + port              = 443
+      + protocol          = "HTTPS"
+      + ssl_policy        = "ELBSecurityPolicy-2016-08"
+      + tags_all          = (known after apply)
+
+      + default_action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+    }
+
+  # aws_lb_target_group.myec2 will be created
+  + resource "aws_lb_target_group" "myec2" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = false
+      + deregistration_delay               = "300"
+      + id                                 = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancing_algorithm_type      = (known after apply)
+      + name                               = "testterraform"
+      + port                               = 80
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags_all                           = (known after apply)
+      + target_type                        = "instance"
+      + vpc_id                             = (known after apply)
+
+      + health_check {
+          + enabled             = (known after apply)
+          + healthy_threshold   = (known after apply)
+          + interval            = (known after apply)
+          + matcher             = (known after apply)
+          + path                = (known after apply)
+          + port                = (known after apply)
+          + protocol            = (known after apply)
+          + timeout             = (known after apply)
+          + unhealthy_threshold = (known after apply)
+        }
+
+      + stickiness {
+          + cookie_duration = (known after apply)
+          + cookie_name     = (known after apply)
+          + enabled         = (known after apply)
+          + type            = (known after apply)
+        }
+    }
+
+  # aws_lb_target_group_attachment.testterraform will be created
+  + resource "aws_lb_target_group_attachment" "testterraform" {
+      + id               = (known after apply)
+      + port             = 80
+      + target_group_arn = (known after apply)
+      + target_id        = (known after apply)
+    }
+
+  # aws_main_route_table_association.a will be created
+  + resource "aws_main_route_table_association" "a" {
+      + id                      = (known after apply)
+      + original_route_table_id = (known after apply)
+      + route_table_id          = (known after apply)
+      + vpc_id                  = (known after apply)
+    }
+
+  # aws_route53_record.this["sbondar05.ga"] will be created
+  + resource "aws_route53_record" "this" {
+      + allow_overwrite = true
+      + fqdn            = (known after apply)
+      + id              = (known after apply)
+      + name            = (known after apply)
+      + records         = (known after apply)
+      + ttl             = 60
+      + type            = (known after apply)
+      + zone_id         = (known after apply)
+    }
+
+  # aws_route53_record.this-ns will be created
+  + resource "aws_route53_record" "this-ns" {
+      + allow_overwrite = true
+      + fqdn            = (known after apply)
+      + id              = (known after apply)
+      + name            = "test.sbondar05.ga"
+      + records         = (known after apply)
+      + ttl             = 172800
+      + type            = "NS"
+      + zone_id         = (known after apply)
+    }
+
+  # aws_route53_zone.main will be created
+  + resource "aws_route53_zone" "main" {
+      + arn           = (known after apply)
+      + comment       = "Managed by Terraform"
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "sbondar05.ga"
+      + name_servers  = (known after apply)
+      + tags_all      = (known after apply)
+      + zone_id       = (known after apply)
+    }
+
+  # aws_route_table.default_rt will be created
+  + resource "aws_route_table" "default_rt" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = [
+          + {
+              + carrier_gateway_id         = ""
+              + cidr_block                 = "0.0.0.0/0"
+              + destination_prefix_list_id = ""
+              + egress_only_gateway_id     = ""
+              + gateway_id                 = (known after apply)
+              + instance_id                = ""
+              + ipv6_cidr_block            = ""
+              + local_gateway_id           = ""
+              + nat_gateway_id             = ""
+              + network_interface_id       = ""
+              + transit_gateway_id         = ""
+              + vpc_endpoint_id            = ""
+              + vpc_peering_connection_id  = ""
+            },
+        ]
+      + tags             = {
+          + "Name" = "myroutetable"
+        }
+      + tags_all         = {
+          + "Name" = "myroutetable"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # aws_security_group.allow_elb will be created
+  + resource "aws_security_group" "allow_elb" {
+      + arn                    = (known after apply)
+      + description            = "Allow ELB inbound traffic"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "for all outgoing traffics"
+              + from_port        = 0
+              + ipv6_cidr_blocks = [
+                  + "::/0",
+                ]
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = []
+              + description      = "From ELB to EC2"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = (known after apply)
+              + self             = false
+              + to_port          = 80
+            },
+        ]
+      + name                   = "allow_elb"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "allow_elb"
+        }
+      + tags_all               = {
+          + "Name" = "allow_elb"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # aws_security_group.allow_ssh will be created
+  + resource "aws_security_group" "allow_ssh" {
+      + arn                    = (known after apply)
+      + description            = "Allow SSH inbound traffic"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "for all outgoing traffics"
+              + from_port        = 0
+              + ipv6_cidr_blocks = [
+                  + "::/0",
+                ]
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "SSH from World"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "allow_ssh"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "allow_ssh"
+        }
+      + tags_all               = {
+          + "Name" = "allow_ssh"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # aws_security_group.allow_web will be created
+  + resource "aws_security_group" "allow_web" {
+      + arn                    = (known after apply)
+      + description            = "Allow WEB inbound traffic"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "for all outgoing traffics"
+              + from_port        = 0
+              + ipv6_cidr_blocks = [
+                  + "::/0",
+                ]
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "WEB from World"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+        ]
+      + name                   = "allow_web"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "allow_web"
+        }
+      + tags_all               = {
+          + "Name" = "allow_web"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # aws_subnet.new-public-01 will be created
+  + resource "aws_subnet" "new-public-01" {
+      + arn                             = (known after apply)
+      + assign_ipv6_address_on_creation = false
+      + availability_zone               = "eu-central-1a"
+      + availability_zone_id            = (known after apply)
+      + cidr_block                      = "10.8.128.0/18"
+      + id                              = (known after apply)
+      + ipv6_cidr_block_association_id  = (known after apply)
+      + map_public_ip_on_launch         = true
+      + owner_id                        = (known after apply)
+      + tags                            = {
+          + "Name" = "new-public-01"
+        }
+      + tags_all                        = {
+          + "Name" = "new-public-01"
+        }
+      + vpc_id                          = (known after apply)
+    }
+
+  # aws_subnet.new-public-02 will be created
+  + resource "aws_subnet" "new-public-02" {
+      + arn                             = (known after apply)
+      + assign_ipv6_address_on_creation = false
+      + availability_zone               = "eu-central-1b"
+      + availability_zone_id            = (known after apply)
+      + cidr_block                      = "10.8.192.0/18"
+      + id                              = (known after apply)
+      + ipv6_cidr_block_association_id  = (known after apply)
+      + map_public_ip_on_launch         = true
+      + owner_id                        = (known after apply)
+      + tags                            = {
+          + "Name" = "new-public-02"
+        }
+      + tags_all                        = {
+          + "Name" = "new-public-02"
+        }
+      + vpc_id                          = (known after apply)
+    }
+
+  # aws_vpc.main will be created
+  + resource "aws_vpc" "main" {
+      + arn                            = (known after apply)
+      + cidr_block                     = "10.8.0.0/16"
+      + default_network_acl_id         = (known after apply)
+      + default_route_table_id         = (known after apply)
+      + default_security_group_id      = (known after apply)
+      + dhcp_options_id                = (known after apply)
+      + enable_classiclink             = (known after apply)
+      + enable_classiclink_dns_support = (known after apply)
+      + enable_dns_hostnames           = (known after apply)
+      + enable_dns_support             = true
+      + id                             = (known after apply)
+      + instance_tenancy               = "default"
+      + ipv6_association_id            = (known after apply)
+      + ipv6_cidr_block                = (known after apply)
+      + main_route_table_id            = (known after apply)
+      + owner_id                       = (known after apply)
+      + tags_all                       = (known after apply)
+    }
+
+Plan: 25 to add, 0 to change, 0 to destroy.

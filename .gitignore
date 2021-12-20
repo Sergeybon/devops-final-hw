@@ -1,0 +1,9 @@
+.idea
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+terraform.iml
+.terraform.tfstate.lock.info
+11.txt
+
+planfile
