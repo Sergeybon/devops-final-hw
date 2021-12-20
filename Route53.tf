@@ -18,7 +18,7 @@ resource "aws_acm_certificate" "this" {
   }
 }
 
-# creates the CNAME record Certificate Manager uses to validate you own the domain aws_route53_record
+# creates the record Certificate Manager uses to validate you own the domain aws_route53_record
 #resource "aws_route53_zone" "sbondar05" {
 #  name = "test.sbondar05.ga"
 #}
