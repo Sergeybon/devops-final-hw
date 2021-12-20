@@ -49,3 +49,9 @@ resource "aws_lb_target_group_attachment" "testterraform" {
   target_id        = aws_instance.test_instance.id
   port             = 80
 }
+
+resource "aws_lb_target_group_attachment" "testterraform2" {
+  target_group_arn = aws_lb_target_group.myec2.arn
+  target_id        = aws_instance.test_instance2.id
+  port             = 80
+}
